@@ -49,7 +49,6 @@ const Home = (props: HomeProps) => {
   });
 
   const [startDate, setStartDate] = useState(new Date(props.startDate));
-
   const wallet = useWallet();
   const [candyMachine, setCandyMachine] = useState<CandyMachine>();
 
@@ -145,7 +144,7 @@ const Home = (props: HomeProps) => {
         signTransaction: wallet.signTransaction,
       } as anchor.Wallet;
 
-      const { candyMachine, goLiveDate, itemsRemaining } =
+      const { candyMachine, goLiveDate, itemsRemaining, itemsAvailable } =
         await getCandyMachineState(
           anchorWallet,
           props.candyMachineId,
@@ -166,6 +165,10 @@ const Home = (props: HomeProps) => {
 
       {wallet.connected && (
         <p>Balance: {(balance || 0).toLocaleString()} SOL</p>
+      )}
+
+      {wallet.connected && (
+        <p>Items available: ??? </p>
       )}
 
       <MintContainer>
