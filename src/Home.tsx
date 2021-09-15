@@ -38,6 +38,8 @@ export interface HomeProps {
 
 const Home = (props: HomeProps) => {
   const [balance, setBalance] = useState<number>();
+  const [available, setAvailability] = useState<number>();
+  const [remaining, setRemaining] = useState<number>();
   const [isActive, setIsActive] = useState(false); // true when countdown completes
   const [isSoldOut, setIsSoldOut] = useState(false); // true when items remaining is zero
   const [isMinting, setIsMinting] = useState(false); // true when user got to press MINT
@@ -126,7 +128,7 @@ const Home = (props: HomeProps) => {
       }
     })();
   }, [wallet, props.connection]);
-
+  
   useEffect(() => {
     (async () => {
       if (
@@ -150,10 +152,12 @@ const Home = (props: HomeProps) => {
           props.candyMachineId,
           props.connection
         );
-
+          
       setIsSoldOut(itemsRemaining === 0);
       setStartDate(goLiveDate);
       setCandyMachine(candyMachine);
+      setAvailability(itemsAvailable);
+      setRemaining(itemsRemaining);
     })();
   }, [wallet, props.candyMachineId, props.connection]);
 
@@ -168,7 +172,7 @@ const Home = (props: HomeProps) => {
       )}
 
       {wallet.connected && (
-        <p>Items available: ??? </p>
+        <p>Items available: {remaining} / {available} </p>
       )}
 
       <MintContainer>
